@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gabut</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        font-family: Arial, sans-serif;
+        overflow: hidden; /* Optional: Prevent scrolling */
+      }
+
+      main {
+        width: 100%;
+        height: 100vh;
+        position: relative;
+      }
+
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <canvas id="background-screen"></canvas>
+      <canvas id="play-screen"></canvas>
+    </main>
+    <script src="./src/Controller.js"></script>
+    <script src="./src/Player.js"></script>
+    <script src="./src/Utils.js"></script>
+    <script src="./src/Block.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        const [playCanvas, playCtx] = Utils.drawPlayScreen();
+        const [backgroundCanvas, backgroundCtx] = Utils.drawBackgroundScreen();
+
+        await delay(10);
+        // Block lv1
+        new Block(
+          backgroundCtx,
+          0,
+          window.innerHeight - 48,
+          Math.round(window.innerWidth / 48)
+        );
+
+        await delay(10);
+
+        // Block lv2
+        new Block(
+          backgroundCtx,
+          0,
+          window.innerHeight - 48 * 6,
+          Math.round(window.innerWidth / (48 * 2)) + 5
+        );
+
+        await delay(10);
+
+        // Block lv3 lft
+        new Block(
+          backgroundCtx,
+          0,
+          window.innerHeight - 48 * 11,
+          Math.round(window.innerWidth / (48 * 2))
+        );
+
+        await delay(10);
+
+        // Block lv4 rgt
+        new Block(
+          backgroundCtx,
+          window.innerWidth - 48 * Math.round(window.innerWidth / (48 * 3)),
+          window.innerHeight - 48 * 15,
+          Math.round(window.innerWidth / (48 * 3))
+        );
+
+        await delay(10);
+
+        new Player(playCtx);
+      });
+
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+    </script>
+  </body>
+</html>
