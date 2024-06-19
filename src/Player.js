@@ -18,7 +18,7 @@ class Player {
     this.standPosition = this.standRight;
     this.moveSpeed = 8;
 
-    this.jumpFrameRate = 60;
+    this.jumpFrameRate = 40;
     this.moveFrameRate = 25;
     this.lastJumpUpdate = 0;
     this.lastMoveUpdate = 0;
@@ -231,7 +231,7 @@ class Player {
       this.lastJumpUpdate = now;
     }
 
-    if (this.isJumping) {
+    if (this.isJumping && (this.isMoveRight || this.isMoveLeft)) {
       this.drawPlayerObject(jumpScenes);
     } else {
       this.drawPlayerObject(this.standPosition);
