@@ -58,8 +58,18 @@
         new Block(
           backgroundCtx,
           0,
-          window.innerHeight - 48 * 6,
+          window.innerHeight - 48 * 5.5,
           Math.round(window.innerWidth / (48 * 2)) + 5
+        );
+
+        await delay(10);
+
+        // Block lv2 obs
+        new Block(
+          backgroundCtx,
+          (Math.round(window.innerWidth / (48 * 2)) * 48 - 48) + (48 * 5),
+          window.innerHeight - 48 * 6.5,
+          1
         );
 
         await delay(10);
@@ -68,8 +78,18 @@
         new Block(
           backgroundCtx,
           0,
-          window.innerHeight - 48 * 11,
+          window.innerHeight - 48 * 10,
           Math.round(window.innerWidth / (48 * 2))
+        );
+
+        await delay(10);
+
+        // Block lv3 obs
+        new Block(
+          backgroundCtx,
+          Math.round(window.innerWidth / (48 * 2)) * 48 - 48,
+          window.innerHeight - 48 * 11,
+          1
         );
 
         await delay(10);

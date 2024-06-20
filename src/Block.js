@@ -17,7 +17,7 @@ class Block {
 
     window.blocks.push({
       y: this.y,
-      startX: this.x,
+      startX: this.x + 20,
       endX: (this.x + (this.width) * this.drawTimes) - 20,
     });
 

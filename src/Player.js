@@ -1,7 +1,7 @@
 class Player {
   constructor(ctx) {
     this.ctx = ctx;
-    this.blockPosition = 48 * 11;
+    this.blockPosition = 48 * 10;
     this.x = 15;
     this.y = window.innerHeight - 64 - this.blockPosition;
     this.width = 64;
@@ -166,6 +166,24 @@ class Player {
       return;
     }
 
+    // Check collision with blocks
+    for (let block of window.blocks) {
+      if (
+        this.y + this.height > block.y &&
+        this.y < block.y &&
+        this.x + this.width > block.startX &&
+        this.x < block.endX
+      ) {
+        if (x > 0) {
+          this.x = block.startX - this.width;
+        } else if (x < 0) {
+          this.x = block.endX;
+        }
+
+        break;
+      }
+    }
+
     let scenes;
     if (this.isRunMove) {
       scenes = this.getRunAnimation();
@@ -245,7 +263,6 @@ class Player {
       this.moveAnimationFall();
 
       this.stopMove(variable);
-      return;
     }
 
     window[variable] = requestAnimationFrame(() => {
