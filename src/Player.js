@@ -11,7 +11,7 @@ class Player {
     this.isMoveLeft = false;
     this.isRunMove = false;
     this.jumpSpeed = 0;
-    this.gravity = 0.6;
+    this.gravity = 0.7;
     this.jumpStrength = 10;
     this.currentSceneIndex = 16;
     this.standRight = 16;
