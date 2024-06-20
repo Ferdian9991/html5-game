@@ -17,17 +17,19 @@ class Controller {
     this.keys[e.key] = isPressed;
     switch (e.key) {
       case "ArrowUp":
-        this.events?.up(this.getState(isPressed));
+        this.events?.up?.(this.getState(isPressed));
         break;
       case "ArrowDown":
-        this.events?.down(this.getState(isPressed));
+        this.events?.down?.(this.getState(isPressed));
         break;
       case "ArrowLeft":
-        this.events?.left(this.getState(isPressed));
+        this.events?.left?.(this.getState(isPressed));
         break;
       case "ArrowRight":
-        this.events?.right(this.getState(isPressed));
+        this.events?.right?.(this.getState(isPressed));
         break;
+      case " ":
+        this.events?.space?.(this.getState(isPressed));
     }
   }
 

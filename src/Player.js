@@ -9,6 +9,7 @@ class Player {
     this.isJumping = false;
     this.isMoveRight = false;
     this.isMoveLeft = false;
+    this.isRunMove = false;
     this.jumpSpeed = 0;
     this.gravity = 0.6;
     this.jumpStrength = 10;
@@ -17,7 +18,6 @@ class Player {
     this.standLeft = 24;
     this.standPosition = this.standRight;
     this.moveSpeed = 6;
-
     this.jumpFrameRate = 40;
     this.moveFrameRate = 15;
     this.lastJumpUpdate = 0;
@@ -130,6 +130,15 @@ class Player {
 
         this.drawPlayerObject(this.standRight);
       },
+      space: (state) => {
+        if (state.isPressed && !this.isRunMove) {
+          this.isRunMove = true;
+
+          return;
+        }
+
+        this.isRunMove = false;
+      },
     });
   }
 
@@ -158,6 +167,30 @@ class Player {
     }
 
     let scenes;
+    if (this.isRunMove) {
+      scenes = this.getRunAnimation();
+    } else {
+      scenes = this.getWalkAnimation();
+    }
+
+    this.currentSceneIndex = (this.currentSceneIndex + 1) % scenes.length;
+    this.drawPlayerObject(scenes[this.currentSceneIndex]);
+  }
+
+  getWalkAnimation() {
+    let scenes = [];
+
+    if (this.isMoveRight) {
+      scenes = this.getAnimationScene("walk_r");
+    } else if (this.isMoveLeft) {
+      scenes = this.getAnimationScene("walk_l");
+    }
+
+    return scenes;
+  }
+
+  getRunAnimation() {
+    let scenes = [];
 
     if (this.isMoveRight) {
       scenes = this.getAnimationScene("run_r");
@@ -165,8 +198,7 @@ class Player {
       scenes = this.getAnimationScene("run_l");
     }
 
-    this.currentSceneIndex = (this.currentSceneIndex + 1) % scenes.length;
-    this.drawPlayerObject(scenes[this.currentSceneIndex]);
+    return scenes;
   }
 
   moveY(y) {
@@ -188,14 +220,23 @@ class Player {
     const now = Date.now();
     const delta = now - this.lastMoveUpdate;
 
-    if (delta <= 1000 / this.moveFrameRate) {
+    let updatedFrameRate = this.isRunMove ? 20 : this.moveFrameRate;
+
+    if (delta <= 1000 / updatedFrameRate) {
       window[variable] = requestAnimationFrame(() => {
         this.smoothMoveX(variable, value);
       });
       return;
     }
 
-    this.moveX(value);
+    let passedValue = 0;
+    if (this.isRunMove) {
+      passedValue = value < 0 ? -12 : 12;
+    } else {
+      passedValue = value;
+    }
+
+    this.moveX(passedValue);
     this.lastMoveUpdate = now;
 
     if (!this.isOnBlock() && !this.isJumping) {
@@ -296,8 +337,10 @@ class Player {
 
   getAnimationScene(scene) {
     const scenes = {
-      run_r: [48, 49, 50, 51],
-      run_l: [59, 57, 58, 56],
+      walk_r: [48, 49, 50, 51],
+      walk_l: [59, 57, 58, 56],
+      run_r: [52, 53, 54, 55],
+      run_l: [60, 61, 62, 63],
       jump_r: [54],
       jump_l: [62],
     };
