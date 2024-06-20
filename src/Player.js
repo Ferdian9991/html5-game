@@ -155,11 +155,11 @@ class Player {
   }
 
   moveX(x) {
-    if (!this.onOffsetCollision()) {
-      this.x += x;
-    } else {
+    if (this.onOffsetCollision()) {
       return;
     }
+
+    this.x += x;
 
     // If the player is jumping, don't animate the run
     if (this.isJumping) {
