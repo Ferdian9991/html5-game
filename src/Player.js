@@ -101,6 +101,8 @@ class Player {
         }
       },
       left: (state) => {
+        if (this.isMoveRight) return;
+
         if (state.isPressed) {
           this.isMoveLeft = true;
           this.standPosition = this.standLeft;
@@ -114,6 +116,8 @@ class Player {
         this.drawPlayerObject(this.standLeft);
       },
       right: (state) => {
+        if (this.isMoveLeft) return;
+
         if (state.isPressed) {
           this.isMoveRight = true;
           this.standPosition = this.standRight;
@@ -145,6 +149,11 @@ class Player {
     if (!this.onOffsetCollision()) {
       this.x += x;
     } else {
+      return;
+    }
+
+    // If the player is jumping, don't animate the run
+    if (this.isJumping) {
       return;
     }
 
@@ -192,7 +201,7 @@ class Player {
     if (!this.isOnBlock() && !this.isJumping) {
       this.isJumping = true;
       this.jumpSpeed = -this.jumpStrength;
-      this.moveAnimationJump();
+      this.moveAnimationFall();
 
       this.stopMove(variable);
       return;
@@ -201,6 +210,45 @@ class Player {
     window[variable] = requestAnimationFrame(() => {
       this.smoothMoveX(variable, value);
     });
+  }
+
+  moveAnimationFall() {
+    if (!this.isJumping) return;
+
+    const now = Date.now();
+    const delta = now - this.lastJumpUpdate;
+
+    let jumpScenes;
+    if (this.standPosition === this.standRight) {
+      jumpScenes = this.getAnimationScene("jump_r")[0];
+    } else {
+      jumpScenes = this.getAnimationScene("jump_l")[0];
+    }
+
+    if (delta > 1000 / this.jumpFrameRate) {
+      this.jumpSpeed += 12;
+      this.moveY(this.jumpSpeed);
+
+      const blockBelow = this.findBlockBelow();
+
+      if (this.y >= blockBelow.y - this.height) {
+        this.y = blockBelow.y - this.height;
+        this.isJumping = false;
+        this.jumpSpeed = 0;
+      }
+
+      this.lastJumpUpdate = now;
+    }
+
+    if (this.isJumping && (this.isMoveRight || this.isMoveLeft)) {
+      this.drawPlayerObject(jumpScenes);
+    } else {
+      this.drawPlayerObject(this.standPosition);
+    }
+
+    if (this.isJumping) {
+      requestAnimationFrame(() => this.moveAnimationJump());
+    }
   }
 
   moveAnimationJump() {

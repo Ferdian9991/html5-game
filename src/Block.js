@@ -18,7 +18,7 @@ class Block {
     window.blocks.push({
       y: this.y,
       startX: this.x,
-      endX: (this.x + (this.width) * this.drawTimes) - 48,
+      endX: (this.x + (this.width) * this.drawTimes) - 20,
     });
 
     const img = new Image();
