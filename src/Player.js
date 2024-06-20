@@ -16,10 +16,10 @@ class Player {
     this.standRight = 16;
     this.standLeft = 24;
     this.standPosition = this.standRight;
-    this.moveSpeed = 8;
+    this.moveSpeed = 6;
 
     this.jumpFrameRate = 40;
-    this.moveFrameRate = 25;
+    this.moveFrameRate = 15;
     this.lastJumpUpdate = 0;
     this.lastMoveUpdate = 0;
 
@@ -296,8 +296,8 @@ class Player {
 
   getAnimationScene(scene) {
     const scenes = {
-      run_r: [52, 53, 54, 55],
-      run_l: [59, 60, 61, 62],
+      run_r: [48, 49, 50, 51],
+      run_l: [59, 57, 58, 56],
       jump_r: [54],
       jump_l: [62],
     };
