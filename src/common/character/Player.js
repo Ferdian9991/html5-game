@@ -31,7 +31,7 @@ export default class Player extends Canvas {
     this.standPosition = this.standRight;
     this.currentSceneIndex = null;
     this.jumpSpeed = 0;
-    this.gravity = 0.3;
+    this.gravity = 0.25;
     this.jumpStrength = 6;
     this.jumpKeyPressed = false;
 
@@ -101,7 +101,7 @@ export default class Player extends Canvas {
   __moveXAxis() {
     const originalX = this.x;
 
-    const moveSpeed = this.isRun ? 2.1 : this.moveSpeed;
+    const moveSpeed = this.isRun ? 2.2 : this.moveSpeed;
 
     if (this.isMoveRight) {
       this.standPosition = this.standRight;
@@ -223,13 +223,11 @@ export default class Player extends Canvas {
         this.y + this.height > block.startY &&
         this.y < block.endY
       ) {
-        if (this.jumpSpeed > 0) {
-          this.y = block.startY - this.height;
-          this.isJump = false;
-          this.jumpSpeed = 0;
-        } else if (this.jumpSpeed < 0) {
+        if (this.jumpSpeed < 0) {
           this.y = block.endY;
           this.jumpSpeed = 0;
+
+          return;
         }
       }
     }
