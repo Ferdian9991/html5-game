@@ -12,9 +12,9 @@ export default class Player extends Canvas {
 
   constructor(id, controller) {
     super(id);
+    this.blockPosition = window.blockPosition || 0;
     this.x = 15;
-    this.blockPosition = 48 * 10;
-    this.y = window.innerHeight - 64 - this.blockPosition;
+    this.y = window.gameCanvasObject.canvas.height - 64 - this.blockPosition;
     this.width = 64;
     this.height = 64;
 
@@ -330,8 +330,8 @@ export default class Player extends Canvas {
   __onOffsetCollision() {
     if (this.x < 0) {
       this.x = 0;
-    } else if (this.x > window.innerWidth - this.width) {
-      this.x = window.innerWidth - this.width;
+    } else if (this.x > window.gameCanvasObject.canvas.width - this.width) {
+      this.x = window.gameCanvasObject.canvas.width - this.width;
     } else {
       return false;
     }

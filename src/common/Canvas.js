@@ -12,6 +12,10 @@ export default class Canvas {
       };
 
       this.__init();
+
+      window.addEventListener("resize", () => {
+        this.__init();
+      });
     } else {
       this.ctx = window.gameCanvasObject.ctx;
       this.canvas = window.gameCanvasObject.canvas;
@@ -23,11 +27,7 @@ export default class Canvas {
   }
 
   __init() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
-
-    if (window.innerWidth < 900) {
-      this.canvas.width = 900;
-    }
+    this.canvas.width = 1200;
+    this.canvas.height = 672;
   }
 }
