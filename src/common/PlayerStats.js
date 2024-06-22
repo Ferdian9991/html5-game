@@ -5,6 +5,7 @@ export default class PlayerStats {
     this.maxHealth = 5;
     this.minHealth = 0;
     this.score = 0;
+    this.isDead = false;
 
     this.isGameOver = false;
     window.playerStats = this;
@@ -28,8 +29,12 @@ export default class PlayerStats {
     }
   }
 
-  isDead() {
-    return this.health < this.recentHealth;
+  setDead() {
+    this.isDead = true;
+  }
+
+  setAlive() {
+    this.isDead = false;
   }
 
   isWin() {

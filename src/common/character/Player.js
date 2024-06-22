@@ -19,6 +19,7 @@ export default class Player extends Canvas {
     this.height = 64;
 
     // Player initialization
+    this.isInnactiveController = false;
     this.isPlayerInit = false;
     this.isMoveRight = false;
     this.isMoveLeft = false;
@@ -55,7 +56,16 @@ export default class Player extends Canvas {
   }
 
   draw() {
-    const { up, left, right, space } = this.controller;
+    let { up, left, right, space } = this.controller;
+
+    if (this.isInnactiveController) {
+      up = false;
+      left = false;
+      right = false;
+      space = false;
+    }
+
+    this.__attackedEvent();
 
     if (!this.isPlayerInit) {
       this.__drawPlayerSprite();
@@ -157,6 +167,27 @@ export default class Player extends Canvas {
       this.isJump = true;
       this.jumpSpeed = -this.jumpStrength;
       this.__jump(true);
+    }
+  }
+
+  __attackedEvent() {
+    if (window.playerStats.isDead) {
+      this.standPosition = 21;
+      this.isInnactiveController = true;
+
+      let delayFrame = 2000;
+      const now = Date.now();
+      if (now - this.lastFrameTime >= delayFrame) {
+        this.lastFrameTime = now;
+        window.playerStats.reduceHealth();
+        window.playerStats.setAlive();
+        this.isInnactiveController = false;
+
+        this.x = 15;
+        this.y =
+          window.gameCanvasObject.canvas.height - 64 - this.blockPosition;
+        this.standPosition = this.standRight;
+      }
     }
   }
 

@@ -41,6 +41,14 @@ export default class Hammer extends Canvas {
         if (this.currentSceneIndex === scenes.length - 1) {
           this.standBy = true;
           this.lastAttackTime = now;
+          if (
+            this.__isPlayerInRange(
+              window.playerMovement.x,
+              window.playerMovement.y
+            )
+          ) {
+            window.playerStats.setDead();
+          }
           return;
         }
       }
@@ -69,5 +77,15 @@ export default class Hammer extends Canvas {
     );
 
     return [sx, sy];
+  }
+
+  __isPlayerInRange(playerX, playerY) {
+    const leftBoundary = Math.floor(this.x - (this.width / 2) * 4);
+    const rightBoundary = Math.floor(this.x + this.width / 2) - 16;
+    const playerWithinXRange =
+      playerX >= leftBoundary && playerX <= rightBoundary;
+    const playerWithinYRange =
+      playerY >= this.y && playerY <= this.y + this.height;
+    return playerWithinXRange && playerWithinYRange;
   }
 }
