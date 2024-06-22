@@ -166,8 +166,8 @@ export default class Player extends Canvas {
     // Check if landed on the ground
     const blockBelow = this.__findBlockBelow();
 
-    if (this.y >= blockBelow.y - this.height) {
-      this.y = blockBelow.y - this.height;
+    if (this.y >= blockBelow?.y - this.height) {
+      this.y = blockBelow?.y - this.height;
       this.isJump = false;
       this.jumpSpeed = 0;
     }
