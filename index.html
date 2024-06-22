@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
   <head>
-    <title>Gabut</title>
+    <meta charset="UTF-8" />
+    <title>Game</title>
     <style>
       body {
         margin: 0;
@@ -24,87 +26,17 @@
         display: block;
         margin: 0 auto;
         width: 100%;
-        object-fit: cover;
         height: 100%;
+        object-fit: cover;
       }
     </style>
   </head>
+
   <body>
     <main>
-      <canvas id="background-screen"></canvas>
-      <canvas id="play-screen"></canvas>
+      <canvas id="gameCanvas"></canvas>
     </main>
-    <script src="./src/Controller.js"></script>
-    <script src="./src/Player.js"></script>
-    <script src="./src/Utils.js"></script>
-    <script src="./src/Block.js"></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", async () => {
-        const [playCanvas, playCtx] = Utils.drawPlayScreen();
-        const [backgroundCanvas, backgroundCtx] = Utils.drawBackgroundScreen();
 
-        await delay(10);
-        // Block lv1
-        new Block(
-          backgroundCtx,
-          0,
-          window.innerHeight - 48,
-          Math.round(window.innerWidth / 48) + 1,
-          'iron'
-        );
-
-        await delay(10);
-
-        // Block lv2
-        new Block(
-          backgroundCtx,
-          0,
-          window.innerHeight - 48 * 5.5,
-          Math.round(window.innerWidth / (48 * 2)) + 5,
-          'iron'
-        );
-
-        await delay(10);
-
-        // Block lv2 obs
-        new Block(
-          backgroundCtx,
-          (Math.round(window.innerWidth / (48 * 2)) * 48 - 48) + (48 * 5),
-          window.innerHeight - 48 * 6.5,
-          1,
-          'iron'
-        );
-
-        await delay(10);
-
-        // Block lv3 lft
-        new Block(
-          backgroundCtx,
-          0,
-          window.innerHeight - 48 * 10,
-          Math.round(window.innerWidth / (48 * 2)),
-          'iron'
-        );
-
-        await delay(10);
-
-        // Block lv3 obs
-        new Block(
-          backgroundCtx,
-          Math.round(window.innerWidth / (48 * 2)) * 48 - 48,
-          window.innerHeight - 48 * 11,
-          1,
-          'iron'
-        );
-
-        await delay(10);
-
-        new Player(playCtx);
-      });
-
-      function delay(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
-    </script>
+    <script type="module" src="src/index.js"></script>
   </body>
 </html>

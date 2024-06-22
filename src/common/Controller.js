@@ -1,4 +1,4 @@
-class Controller {
+export default class Controller {
   constructor(events) {
     this.keys = {};
     this.events = events;
@@ -30,6 +30,7 @@ class Controller {
         break;
       case " ":
         this.events?.space?.(this.getState(isPressed));
+        break;
     }
   }
 
