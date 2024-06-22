@@ -40,6 +40,10 @@ export default class Player extends Canvas {
 
     // Controller
     this.controller = controller;
+    window.playerMovement = {
+      x: 0,
+      y: 0,
+    };
   }
 
   static async preload({ addImage }) {
@@ -96,6 +100,11 @@ export default class Player extends Canvas {
     this.isMoveRight = false;
     this.isMoveLeft = false;
     this.isRun = false;
+
+    window.playerMovement = {
+      x: this.x,
+      y: this.y,
+    };
   }
 
   __moveXAxis() {
