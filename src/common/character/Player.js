@@ -53,7 +53,9 @@ export default class Player extends Canvas {
 
     // For sprint
     if (space) {
-      this.isRun = true;
+      setTimeout(() => {
+        this.isRun = true;
+      }, 150);
     }
 
     if (up && !this.isJump) {
