@@ -31,7 +31,7 @@ export default class Player extends Canvas {
     this.standPosition = this.standRight;
     this.currentSceneIndex = null;
     this.jumpSpeed = 0;
-    this.gravity = 0.25;
+    this.gravity = 0.19;
     this.jumpStrength = 6;
     this.jumpKeyPressed = false;
 
