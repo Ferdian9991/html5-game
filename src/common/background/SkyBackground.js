@@ -2,7 +2,7 @@ import Canvas from "../Canvas.js";
 
 export default class SkyBackground extends Canvas {
   static imageId = "sky-bg";
-  static imageSrc = "assets/sky-bg.jpg";
+  static imageSrc = "assets/image/sky-bg.jpg";
 
   constructor(id) {
     super(id);

@@ -2,13 +2,13 @@ import Canvas from "../Canvas.js";
 
 export default class Player extends Canvas {
   static playerImageId = "player";
-  static playerImageSrc = "assets/player.png";
+  static playerImageSrc = "assets/image/player.png";
 
   static hairImageId = "hair";
-  static hairmageSrc = "assets/player-hair.png";
+  static hairmageSrc = "assets/image/player-hair.png";
 
   static armorImageId = "armor";
-  static armorImageSrc = "assets/player-armor.png";
+  static armorImageSrc = "assets/image/player-armor.png";
 
   constructor(id, controller) {
     super(id);
@@ -33,6 +33,7 @@ export default class Player extends Canvas {
     this.jumpSpeed = 0;
     this.gravity = 0.3;
     this.jumpStrength = 6;
+    this.jumpKeyPressed = false;
 
     // Movement
     this.moveSpeed = 1;
@@ -66,11 +67,18 @@ export default class Player extends Canvas {
       }, 150);
     }
 
-    if (up && !this.isJump) {
-      this.isJump = true;
-      this.jumpSpeed = -this.jumpStrength;
-      this.__jump();
-    } else if (left) {
+    if (up) {
+      if (!this.jumpKeyPressed && !this.isJump) {
+        this.isJump = true;
+        this.jumpSpeed = -this.jumpStrength;
+        this.__jump();
+      }
+      this.jumpKeyPressed = true;
+    } else {
+      this.jumpKeyPressed = false;
+    }
+
+    if (left) {
       this.isMoveLeft = true;
       this.__moveXAxis();
     } else if (right) {
@@ -144,7 +152,7 @@ export default class Player extends Canvas {
   }
 
   __jump(isFall = false) {
-    const delayFrame = 10;
+    const delayFrame = 11;
     const now = Date.now();
 
     if (!this.lastFrameTime || now - this.lastFrameTime >= delayFrame) {
@@ -228,11 +236,8 @@ export default class Player extends Canvas {
   }
 
   __drawPlayerSprite(styleIndex = 16) {
-    const playerImg = this.getImage(Player.playerImageId);
-    const hairImg = this.getImage(Player.hairImageId);
-
-    this.__buildSprite(styleIndex, playerImg);
-    this.__buildSprite(styleIndex, hairImg);
+    this.__buildSprite(styleIndex, this.getImage(Player.playerImageId));
+    this.__buildSprite(styleIndex, this.getImage(Player.hairImageId));
     this.__buildSprite(styleIndex, this.getImage(Player.armorImageId));
   }
 

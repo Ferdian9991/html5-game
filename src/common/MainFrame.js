@@ -46,6 +46,13 @@ export default class MainFrame {
       this.update(window.updateCallback);
     }
 
+    // Event to notify that the initialization is completed
+    const event = new CustomEvent("initializeCompleted", {
+      detail: this.getState(),
+    });
+
+    document.dispatchEvent(event);
+
     console.info("ENGINE: Initialize completed!");
   }
 

@@ -27,3 +27,29 @@ frame.update((renderer) => {
   renderer.blocks.draw();
   renderer.player.draw();
 });
+
+document.addEventListener("initializeCompleted", (event) => {
+  const bg = getImage(SkyBackground.imageId);
+
+  if (bg instanceof HTMLImageElement) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    canvas.width = bg.width;
+    canvas.height = bg.height;
+
+    context.drawImage(bg, 0, 0);
+
+    canvas.toBlob((blob) => {
+      const blobUrl = URL.createObjectURL(blob);
+      const mainElement = document.getElementById("backdrop");
+      mainElement.style.backgroundImage = `url(${blobUrl})`;
+      mainElement.style.backgroundPosition = "center";
+      mainElement.style.backgroundSize = "cover";
+      mainElement.style.backgroundRepeat = "no-repeat";
+
+      mainElement.style.backdropFilter = "blur(8px)"; // For blurring the content behind the element
+      mainElement.style.filter = "blur(8px)";
+    }, "image/png");
+  }
+});

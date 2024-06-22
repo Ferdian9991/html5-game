@@ -2,7 +2,7 @@ import Canvas from "../Canvas.js";
 
 export default class IronBlock extends Canvas {
   static imageId = "grass";
-  static imageSrc = "assets/grass.png";
+  static imageSrc = "assets/image/grass.png";
 
   constructor(id) {
     super(id);
