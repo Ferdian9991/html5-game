@@ -111,7 +111,7 @@ export default class Player extends Canvas {
       this.x -= moveSpeed;
     }
 
-    if (this.__onOffsetCollision()) {
+    if (this.__onOffsetCollisionX()) {
       this.x = originalX;
     }
 
@@ -152,6 +152,8 @@ export default class Player extends Canvas {
   }
 
   __jump(isFall = false) {
+    const originalY = this.y;
+
     const delayFrame = 11;
     const now = Date.now();
 
@@ -160,10 +162,15 @@ export default class Player extends Canvas {
 
       this.y += this.jumpSpeed;
 
-      if (isFall) {
-        this.jumpSpeed += 8;
+      if (this.__onOffsetCollisionY()) {
+        this.y = originalY + 12;
+        this.jumpSpeed = 0;
       } else {
-        this.jumpSpeed += this.gravity;
+        if (isFall) {
+          this.jumpSpeed += 8;
+        } else {
+          this.jumpSpeed += this.gravity;
+        }
       }
     }
 
@@ -330,11 +337,23 @@ export default class Player extends Canvas {
     return closestBlock;
   }
 
-  __onOffsetCollision() {
+  __onOffsetCollisionX() {
     if (this.x < 0) {
       this.x = 0;
     } else if (this.x > window.gameCanvasObject.canvas.width - this.width) {
       this.x = window.gameCanvasObject.canvas.width - this.width;
+    } else {
+      return false;
+    }
+
+    return true;
+  }
+
+  __onOffsetCollisionY() {
+    if (this.y < 0) {
+      this.y = 0;
+    } else if (this.y > window.gameCanvasObject.canvas.height - this.height) {
+      this.y = window.gameCanvasObject.canvas.height - this.height;
     } else {
       return false;
     }
