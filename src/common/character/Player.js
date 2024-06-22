@@ -17,6 +17,7 @@ export default class Player extends Canvas {
     this.isMoveRight = false;
     this.isMoveLeft = false;
     this.isJump = false;
+    this.isRun = false;
 
     // Player state
     this.standRight = 16;
@@ -41,7 +42,7 @@ export default class Player extends Canvas {
   }
 
   draw() {
-    const { up, down, left, right, space } = this.controller;
+    const { up, left, right, space } = this.controller;
 
     if (!this.isPlayerInit) {
       this.__drawPlayerSprite();
@@ -50,11 +51,15 @@ export default class Player extends Canvas {
       return;
     }
 
+    // For sprint
+    if (space) {
+      this.isRun = true;
+    }
+
     if (up && !this.isJump) {
       this.isJump = true;
       this.jumpSpeed = -this.jumpStrength;
       this.__jump();
-    } else if (down) {
     } else if (left) {
       this.isMoveLeft = true;
       this.__moveXAxis();
@@ -70,19 +75,22 @@ export default class Player extends Canvas {
       this.__jump();
     }
 
-    this.isMoveLeft = false;
     this.isMoveRight = false;
+    this.isMoveLeft = false;
+    this.isRun = false;
   }
 
   __moveXAxis() {
     const originalX = this.x;
 
+    const moveSpeed = this.isRun ? 2.1 : this.moveSpeed;
+
     if (this.isMoveRight) {
       this.standPosition = this.standRight;
-      this.x += this.moveSpeed;
+      this.x += moveSpeed;
     } else if (this.isMoveLeft) {
       this.standPosition = this.standLeft;
-      this.x -= this.moveSpeed;
+      this.x -= moveSpeed;
     }
 
     if (this.__onOffsetCollision()) {
@@ -91,10 +99,19 @@ export default class Player extends Canvas {
 
     this.__preventBlockPenetrationX();
 
-    let scenes = this.__getWalkAnimation();
+    let scenes = [];
+    if (this.isRun) {
+      scenes = this.__getRunAnimation();
+    } else {
+      scenes = this.__getWalkAnimation();
+    }
 
-    const delayFrame = 100;
+    let delayFrame = 100;
     const now = Date.now();
+
+    if (this.isRun) {
+      delayFrame = 70;
+    }
 
     // If the player is jumping, stop animate movement x-axis
     if (this.isJump) {
