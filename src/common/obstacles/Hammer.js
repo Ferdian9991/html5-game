@@ -35,20 +35,21 @@ export default class Hammer extends Canvas {
     } else if (!this.standBy) {
       const scenes = [0, 1, 2, 3, 4, 5, 6, 7];
 
+      if (
+        this.currentSceneIndex >= scenes.length - 3 &&
+        this.__isPlayerInRange(window.playerMovement.x, window.playerMovement.y)
+      ) {
+        window.playerStats.setDead();
+      }
+
       if (!this.lastFrameTime || now - this.lastFrameTime >= delayFrame) {
         this.lastFrameTime = now;
         this.currentSceneIndex = (this.currentSceneIndex + 1) % scenes.length;
+
         if (this.currentSceneIndex === scenes.length - 1) {
           this.standBy = true;
           this.lastAttackTime = now;
-          if (
-            this.__isPlayerInRange(
-              window.playerMovement.x,
-              window.playerMovement.y
-            )
-          ) {
-            window.playerStats.setDead();
-          }
+
           return;
         }
       }
