@@ -47,9 +47,6 @@ document.addEventListener("initializeCompleted", (event) => {
       mainElement.style.backgroundPosition = "center";
       mainElement.style.backgroundSize = "cover";
       mainElement.style.backgroundRepeat = "no-repeat";
-
-      mainElement.style.backdropFilter = "blur(8px)"; // For blurring the content behind the element
-      mainElement.style.filter = "blur(8px)";
     }, "image/png");
   }
 });
