@@ -25,5 +25,9 @@ export default class Canvas {
   __init() {
     this.canvas.width = window.innerWidth;
     this.canvas.height = window.innerHeight;
+
+    if (window.innerWidth < 900) {
+      this.canvas.width = 900;
+    }
   }
 }
