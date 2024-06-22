@@ -1,3 +1,4 @@
+import PlayerStats from "../PlayerStats.js";
 import SkyBackground from "../background/SkyBackground.js";
 import IronBlock from "../blocks/IronBlock.js";
 import Player from "../character/Player.js";
@@ -7,8 +8,15 @@ export default class Level1 {
   constructor(id, controller) {
     this.id = id;
 
+    // Initialize player stats
+    new PlayerStats();
+
+    // Initialize background
     this.background = new SkyBackground(this.id);
+
+    // Set the player on specific block position
     window.blockPosition = window.gameCanvasObject.canvas.height - 48 * 13;
+
     this.player = new Player(this.id, controller);
     this.block = new IronBlock(this.id);
     this.obstacle = {
