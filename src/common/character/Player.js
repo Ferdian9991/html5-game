@@ -1,8 +1,14 @@
 import Canvas from "../Canvas.js";
 
 export default class Player extends Canvas {
-  static imageId = "player";
-  static imageSrc = "assets/player.png";
+  static playerImageId = "player";
+  static playerImageSrc = "assets/player.png";
+
+  static hairImageId = "hair";
+  static hairmageSrc = "assets/player-hair.png";
+
+  static armorImageId = "armor";
+  static armorImageSrc = "assets/player-armor.png";
 
   constructor(id, controller) {
     super(id);
@@ -38,7 +44,9 @@ export default class Player extends Canvas {
   static async preload({ addImage }) {
     if (typeof addImage !== "function") return;
 
-    await addImage(Player.imageId, Player.imageSrc);
+    await addImage(Player.playerImageId, Player.playerImageSrc);
+    await addImage(Player.hairImageId, Player.hairmageSrc);
+    await addImage(Player.armorImageId, Player.armorImageSrc);
   }
 
   draw() {
@@ -220,9 +228,21 @@ export default class Player extends Canvas {
   }
 
   __drawPlayerSprite(styleIndex = 16) {
-    const img = this.getImage(Player.imageId);
+    const playerImg = this.getImage(Player.playerImageId);
+    const hairImg = this.getImage(Player.hairImageId);
 
-    const [sx, sy] = this.__buildSprite(styleIndex, img);
+    this.__buildSprite(styleIndex, playerImg);
+    this.__buildSprite(styleIndex, hairImg);
+    this.__buildSprite(styleIndex, this.getImage(Player.armorImageId));
+  }
+
+  __buildSprite(index, img) {
+    const spritesPerRow = img.width / this.width;
+    const row = Math.floor(index / spritesPerRow);
+    const col = index % spritesPerRow;
+    const sx = col * this.width;
+    const sy = row * this.height;
+
     const scale = 160 / this.width;
 
     this.ctx.drawImage(
@@ -236,14 +256,6 @@ export default class Player extends Canvas {
       this.width * scale,
       this.height * scale
     );
-  }
-
-  __buildSprite(index, img) {
-    const spritesPerRow = img.width / this.width;
-    const row = Math.floor(index / spritesPerRow);
-    const col = index % spritesPerRow;
-    const sx = col * this.width;
-    const sy = row * this.height;
 
     return [sx, sy];
   }
