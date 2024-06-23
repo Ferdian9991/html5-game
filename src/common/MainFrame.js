@@ -15,6 +15,7 @@ export default class MainFrame {
     this.assets = [];
 
     window.getImage = this.__getImage.bind(this);
+    window.getAudio = this.__getAudio.bind(this);
 
     this.__init();
   }
@@ -82,6 +83,7 @@ export default class MainFrame {
     this.isPreloaded = true;
     await callback({
       addImage: this.__addImage.bind(this),
+      addAudio: this.__addAudio.bind(this),
     });
     this.isPreloaded = false;
 
@@ -101,6 +103,11 @@ export default class MainFrame {
     return asset ? asset.img : null;
   }
 
+  __getAudio(id) {
+    const asset = this.assets.find((asset) => asset.id === id);
+    return asset ? asset.audio : null;
+  }
+
   async __addImage(id, src) {
     const img = new Image();
     img.src = src;
@@ -117,6 +124,26 @@ export default class MainFrame {
       img.onerror = () => {
         console.error(`Failed to load image: ${src}`);
         reject("Failed to load image");
+      };
+    });
+  }
+
+  async __addAudio(id, src) {
+    const audio = new Audio();
+    audio.src = src;
+
+    return new Promise((resolve, reject) => {
+      audio.oncanplaythrough = () => {
+        this.assets.push({
+          id,
+          audio,
+        });
+        resolve();
+      };
+
+      audio.onerror = () => {
+        console.error(`Failed to load audio: ${src}`);
+        reject("Failed to load audio");
       };
     });
   }

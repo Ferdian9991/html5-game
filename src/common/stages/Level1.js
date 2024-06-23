@@ -43,14 +43,14 @@ export default class Level1 {
     };
   }
 
-  static async preload({ addImage }) {
-    if (typeof addImage !== "function") return;
+  static async preload(loader) {
+    if (typeof loader !== "object") return;
 
-    await SkyBackground.preload({ addImage });
-    await Player.preload({ addImage });
-    await IronBlock.preload({ addImage });
-    await CoinBlock.preload({ addImage });
-    await Hammer.preload({ addImage });
+    await SkyBackground.preload(loader);
+    await Player.preload(loader);
+    await IronBlock.preload(loader);
+    await CoinBlock.preload(loader);
+    await Hammer.preload(loader);
   }
 
   draw() {

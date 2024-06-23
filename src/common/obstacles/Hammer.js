@@ -83,10 +83,10 @@ export default class Hammer extends Canvas {
   __isPlayerInRange(playerX, playerY) {
     const leftBoundary = Math.floor(this.x - (this.width / 2) * 4);
     const rightBoundary = Math.floor(this.x + this.width / 2) - 16;
+    const y = playerY + 32;
     const playerWithinXRange =
       playerX >= leftBoundary && playerX <= rightBoundary;
-    const playerWithinYRange =
-      playerY >= this.y && playerY <= this.y + this.height;
+    const playerWithinYRange = y >= this.y && y <= this.y + this.height;
     return playerWithinXRange && playerWithinYRange;
   }
 }

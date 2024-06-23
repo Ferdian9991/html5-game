@@ -26,6 +26,10 @@ export default class Canvas {
     return window.getImage(id);
   }
 
+  getAudio(id) {
+    return window.getAudio(id);
+  }
+
   __init() {
     this.canvas.width = 1200;
     this.canvas.height = 672;
