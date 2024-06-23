@@ -18,6 +18,7 @@ export default class Hammer extends Canvas {
     this.standBy = true;
     this.lastAttackTime = 0;
     this.attackDelay = delay;
+    this.isPlayHitSound = false;
   }
 
   static async preload({ addImage, addAudio }) {
@@ -39,10 +40,23 @@ export default class Hammer extends Canvas {
     } else if (!this.standBy) {
       const scenes = [0, 1, 2, 3, 4, 5, 6, 7];
 
+      if (!window.playerStats.isDead) {
+        this.isPlayHitSound = false;
+      }
+
       if (
         this.currentSceneIndex >= 4 &&
         this.__isPlayerInRange(window.playerMovement.x, window.playerMovement.y)
       ) {
+        if (!this.isPlayHitSound) {
+          const hammerHitSound = this.getAudio(Hammer.hammerHitAudioId);
+          hammerHitSound.currentTime = 0;
+          hammerHitSound.volume = 0.5;
+          hammerHitSound.play();
+
+          this.isPlayHitSound = true;
+        }
+
         window.playerStats.setDead();
         this.currentSceneIndex = 4;
 
@@ -56,13 +70,6 @@ export default class Hammer extends Canvas {
       if (!this.lastFrameTime || now - this.lastFrameTime >= delayFrame) {
         this.lastFrameTime = now;
         this.currentSceneIndex = (this.currentSceneIndex + 1) % scenes.length;
-
-        if (this.currentSceneIndex === 4) {
-          const hammerHitSound = this.getAudio(Hammer.hammerHitAudioId);
-          hammerHitSound.currentTime = 0;
-          hammerHitSound.volume = 0.5;
-          hammerHitSound.play();
-        }
 
         if (this.currentSceneIndex === scenes.length - 1) {
           this.standBy = true;
