@@ -10,19 +10,19 @@ export default class CoinBlock extends Canvas {
   constructor(id) {
     super(id);
 
-    // Actual size of the coin image
     this.coinWidth = 16;
     this.coinHeight = 16;
 
-    // Total size with padding
     this.width = 48;
     this.height = 48;
 
-    this.blockId = "coin" + Math.random().toString(16).slice(2);
-
-    // Internal arrays to store coins and collected coins
     this.coins = [];
     this.collectedCoins = [];
+
+    this.animationOffset = 0;
+    this.animationSpeed = 0.03;
+    this.collectAnimationSpeed = 2;
+    this.collectAnimationDuration = 60;
   }
 
   static async preload({ addImage, addAudio }) {
@@ -33,7 +33,9 @@ export default class CoinBlock extends Canvas {
   }
 
   draw(coins = []) {
-    this.coins = this.coins.filter((block) => block.id !== this.blockId);
+    this.coins = this.coins.filter(
+      (coin) => !coins.some((c) => c.x === coin.x && c.y === coin.y)
+    );
 
     for (const block of coins) {
       const { x, y, drawTimes } = block;
@@ -42,28 +44,12 @@ export default class CoinBlock extends Canvas {
         continue;
       }
 
-      this.coins.push({
-        id: this.blockId,
-        y: y,
-        startY: y,
-        endY: y + this.height - this.coinHeight,
-        startX: x + (this.width - this.coinWidth) / 2,
-        endX: x + this.width - (this.width - this.coinWidth) / 2,
-        childs: [],
-      });
-
-      const img = this.getImage(CoinBlock.imageId);
       for (let i = 0; i < drawTimes; i++) {
         const coinX = x + i * this.width;
         const coinY = y;
 
-        const findCoinBlock = this.coins.find(
-          (block) => block.id === this.blockId
-        );
-
-        if (findCoinBlock) {
-          findCoinBlock.childs.push({
-            parentId: this.blockId,
+        if (!this.coins.some((coin) => coin.x === coinX && coin.y === coinY)) {
+          this.coins.push({
             x: coinX,
             y: coinY,
             width: this.width,
@@ -71,21 +57,26 @@ export default class CoinBlock extends Canvas {
           });
         }
 
+        const img = this.getImage(CoinBlock.imageId);
         this.__drawBlock(img, coinX, coinY, this.width, this.height);
       }
     }
+
+    this.__animateCollectedCoins();
+
+    this.animationOffset += this.animationSpeed;
+    this.frame++;
   }
 
   __drawBlock(img, coinX, coinY, width, height) {
-    const findCollectedCoin = this.collectedCoins.find(
-      (c) => c.x === coinX && c.y === coinY && c.parentId === this.blockId
-    );
-
-    if (findCollectedCoin) {
+    if (this.collectedCoins.some((c) => c.x === coinX && c.y === coinY)) {
       return;
     }
 
-    this.ctx.drawImage(img, coinX, coinY, width, height);
+    const bounceOffset = Math.sin(this.animationOffset) * 5;
+    const bounceY = coinY + bounceOffset;
+
+    this.ctx.drawImage(img, coinX, bounceY, width, height);
 
     const playerRangeX = window.playerMovement.x + 24;
     const playerRangeY = window.playerMovement.y + 64;
@@ -105,35 +96,46 @@ export default class CoinBlock extends Canvas {
   }
 
   __collectCoin(coinX, coinY) {
-    const findCoinBlock = this.coins.find((c) => c.id === this.blockId);
-
-    if (!findCoinBlock) {
+    if (!this.coins.some((coin) => coin.x === coinX && coin.y === coinY)) {
       return;
     }
 
-    const coinBlockByCoordinate = findCoinBlock.childs.find(
-      (c) => c.x === coinX && c.y === coinY && c.parentId === this.blockId
-    );
-
-    if (!coinBlockByCoordinate) {
-      return;
-    }
-
-    const findCollectedCoin = this.collectedCoins.find(
-      (c) => c.x === coinX && c.y === coinY && c.parentId === this.blockId
-    );
-
-    if (!findCollectedCoin) {
+    if (!this.collectedCoins.some((c) => c.x === coinX && c.y === coinY)) {
       this.collectedCoins.push({
         x: coinX,
         y: coinY,
-        parentId: this.blockId,
+        opacity: 1,
+        offsetY: 0,
+        animationFrame: 0,
       });
 
       const coinSound = this.getAudio(CoinBlock.collectCoinAudioId);
       coinSound.currentTime = 0;
       coinSound.volume = 0.5;
       coinSound.play();
+    }
+  }
+
+  __animateCollectedCoins() {
+    const img = this.getImage(CoinBlock.imageId);
+
+    for (const coin of this.collectedCoins) {
+      if (coin.animationFrame < this.collectAnimationDuration) {
+        coin.offsetY -= this.collectAnimationSpeed;
+        coin.opacity -= 1 / this.collectAnimationDuration;
+        coin.animationFrame++;
+
+        this.ctx.save();
+        this.ctx.globalAlpha = coin.opacity;
+        this.ctx.drawImage(
+          img,
+          coin.x,
+          coin.y + coin.offsetY,
+          this.width,
+          this.height
+        );
+        this.ctx.restore();
+      }
     }
   }
 }
