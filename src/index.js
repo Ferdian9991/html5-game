@@ -1,16 +1,13 @@
 import MainFrame from "./common/MainFrame.js";
 import SkyBackground from "./common/background/SkyBackground.js";
 import Level1 from "./common/stages/Level1.js";
-import Player from "./common/character/Player.js";
 
 const frame = new MainFrame();
 
 const idCanvas = "gameCanvas";
 
 frame.preload(async (loader) => {
-  await SkyBackground.preload(loader);
   await Level1.preload(loader);
-  await Player.preload(loader);
 });
 
 frame.initialize((controller) => {

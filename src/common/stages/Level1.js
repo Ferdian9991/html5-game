@@ -1,5 +1,6 @@
 import PlayerStats from "../PlayerStats.js";
 import SkyBackground from "../background/SkyBackground.js";
+import CoinBlock from "../blocks/CoinBlock.js";
 import IronBlock from "../blocks/IronBlock.js";
 import Player from "../character/Player.js";
 import Hammer from "../obstacles/Hammer.js";
@@ -18,7 +19,8 @@ export default class Level1 {
     window.blockPosition = window.gameCanvasObject.canvas.height - 48 * 13;
 
     this.player = new Player(this.id, controller);
-    this.block = new IronBlock(this.id);
+    this.ironBlock = new IronBlock(this.id);
+    this.coinBlock = new CoinBlock(this.id);
     this.obstacle = {
       hammer1: new Hammer(
         this.id,
@@ -44,13 +46,17 @@ export default class Level1 {
   static async preload({ addImage }) {
     if (typeof addImage !== "function") return;
 
+    await SkyBackground.preload({ addImage });
+    await Player.preload({ addImage });
     await IronBlock.preload({ addImage });
+    await CoinBlock.preload({ addImage });
     await Hammer.preload({ addImage });
   }
 
   draw() {
     this.__drawBackground();
-    this.__drawBlocks();
+    this.__drawIronBlocks();
+    this.__drawCoinBlocks();
     this.__drawPlayer();
     this.__drawObstacles();
   }
@@ -68,9 +74,58 @@ export default class Level1 {
     this.obstacle.hammer2.draw();
     this.obstacle.hammer3.draw();
   }
+  __drawCoinBlocks() {
+    this.coinBlock.draw([
+      {
+        x: 48 * 11,
+        y: window.gameCanvasObject.canvas.height - 48 * 2,
+        drawTimes: 1,
+      },
+      {
+        x: 48 * 14,
+        y: window.gameCanvasObject.canvas.height - 48 * 2,
+        drawTimes: 1,
+      },
+      {
+        x: 48 * 17,
+        y: window.gameCanvasObject.canvas.height - 48 * 2,
+        drawTimes: 1,
+      },
+      {
+        x: 48 * 7,
+        y: window.gameCanvasObject.canvas.height - 48 * 9,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 23,
+        y: window.gameCanvasObject.canvas.height - 48 * 9,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 7,
+        y: window.gameCanvasObject.canvas.height - 48 * 5,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 11,
+        y: window.gameCanvasObject.canvas.height - 48 * 5,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 14,
+        y: window.gameCanvasObject.canvas.height - 48 * 5,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 18,
+        y: window.gameCanvasObject.canvas.height - 48 * 5,
+        drawTimes: 2,
+      },
+    ]);
+  }
 
-  __drawBlocks() {
-    this.block.draw([
+  __drawIronBlocks() {
+    this.ironBlock.draw([
       {
         x: 0,
         y: window.gameCanvasObject.canvas.height - 48,

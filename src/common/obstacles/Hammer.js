@@ -26,7 +26,7 @@ export default class Hammer extends Canvas {
   draw() {
     if (this.x === undefined || this.y === undefined) return;
 
-    const delayFrame = 80;
+    const delayFrame = 60;
     const now = Date.now();
 
     if (this.standBy && now - this.lastAttackTime >= this.attackDelay) {
