@@ -25,19 +25,19 @@ export default class Level1 {
       hammer1: new Hammer(
         this.id,
         39.5 * 14,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 14,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
         1000
       ),
       hammer2: new Hammer(
         this.id,
         38.7 * 18,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 14,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
         1500
       ),
       hammer3: new Hammer(
         this.id,
         40 * 21,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 14,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
         2000
       ),
     };

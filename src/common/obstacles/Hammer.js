@@ -36,7 +36,7 @@ export default class Hammer extends Canvas {
       const scenes = [0, 1, 2, 3, 4, 5, 6, 7];
 
       if (
-        this.currentSceneIndex >= scenes.length - 3 &&
+        this.currentSceneIndex >= scenes.length - 2 &&
         this.__isPlayerInRange(window.playerMovement.x, window.playerMovement.y)
       ) {
         window.playerStats.setDead();
