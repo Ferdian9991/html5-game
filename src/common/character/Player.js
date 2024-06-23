@@ -177,7 +177,8 @@ export default class Player extends Canvas {
 
       let delayFrame = 2000;
       const now = Date.now();
-      if (now - this.lastFrameTime >= delayFrame) {
+
+      if (now - this.lastFrameTime >= delayFrame || !this.lastFrameTime) {
         this.lastFrameTime = now;
         window.playerStats.reduceHealth();
         window.playerStats.setAlive();
