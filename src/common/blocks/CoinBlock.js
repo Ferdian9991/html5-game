@@ -132,6 +132,7 @@ export default class CoinBlock extends Canvas {
 
       const coinSound = this.getAudio(CoinBlock.collectCoinAudioId);
       coinSound.currentTime = 0;
+      coinSound.volume = 0.5;
       coinSound.play();
     }
   }

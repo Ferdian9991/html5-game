@@ -1,4 +1,7 @@
 export default class PlayerStats {
+  static playerDeadAudioId = "player-dead-aud";
+  static playerDeadAudioSrc = "assets/sound/player-dead.mp3";
+
   constructor() {
     this.health = 5;
     this.recentHealth = 5;
@@ -9,6 +12,15 @@ export default class PlayerStats {
 
     this.isGameOver = false;
     window.playerStats = this;
+  }
+
+  static async preload({ addAudio }) {
+    if (typeof addAudio !== "function") return;
+
+    await addAudio(
+      PlayerStats.playerDeadAudioId,
+      PlayerStats.playerDeadAudioSrc
+    );
   }
 
   addScore(score) {
@@ -31,6 +43,14 @@ export default class PlayerStats {
 
   setDead() {
     this.isDead = true;
+
+    const playerDeadAudio = window.getAudio(PlayerStats.playerDeadAudioId);
+
+    if (playerDeadAudio) {
+      playerDeadAudio.volume = 1;
+      playerDeadAudio.currentTime = 0;
+      playerDeadAudio.play();
+    }
   }
 
   setAlive() {

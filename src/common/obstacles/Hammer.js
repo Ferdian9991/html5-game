@@ -4,6 +4,9 @@ export default class Hammer extends Canvas {
   static imageId = "hammer";
   static imageSrc = "assets/image/hammer.png";
 
+  static hammerHitAudioId = "hammer-hit-aud";
+  static hammerHitAudioSrc = "assets/sound/hammer-hit.mp3";
+
   constructor(id, x, y, delay = 3000) {
     super(id);
 
@@ -17,10 +20,11 @@ export default class Hammer extends Canvas {
     this.attackDelay = delay;
   }
 
-  static async preload({ addImage }) {
+  static async preload({ addImage, addAudio }) {
     if (typeof addImage !== "function") return;
 
     await addImage(Hammer.imageId, Hammer.imageSrc);
+    await addAudio(Hammer.hammerHitAudioId, Hammer.hammerHitAudioSrc);
   }
 
   draw() {
@@ -36,15 +40,29 @@ export default class Hammer extends Canvas {
       const scenes = [0, 1, 2, 3, 4, 5, 6, 7];
 
       if (
-        this.currentSceneIndex >= scenes.length - 2 &&
+        this.currentSceneIndex >= 4 &&
         this.__isPlayerInRange(window.playerMovement.x, window.playerMovement.y)
       ) {
         window.playerStats.setDead();
+        this.currentSceneIndex = 4;
+
+        this.__buildSprite(
+          this.currentSceneIndex,
+          this.getImage(Hammer.imageId)
+        );
+        return;
       }
 
       if (!this.lastFrameTime || now - this.lastFrameTime >= delayFrame) {
         this.lastFrameTime = now;
         this.currentSceneIndex = (this.currentSceneIndex + 1) % scenes.length;
+
+        if (this.currentSceneIndex === 4) {
+          const hammerHitSound = this.getAudio(Hammer.hammerHitAudioId);
+          hammerHitSound.currentTime = 0;
+          hammerHitSound.volume = 0.5;
+          hammerHitSound.play();
+        }
 
         if (this.currentSceneIndex === scenes.length - 1) {
           this.standBy = true;

@@ -51,6 +51,7 @@ export default class Level1 {
     await IronBlock.preload(loader);
     await CoinBlock.preload(loader);
     await Hammer.preload(loader);
+    await PlayerStats.preload(loader);
   }
 
   draw() {
