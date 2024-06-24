@@ -78,19 +78,29 @@ export default class Level1 {
   __drawCoinBlocks() {
     this.coinBlock.draw([
       {
+        x: 48 * 8,
+        y: window.gameCanvasObject.canvas.height - 48 * 2,
+        drawTimes: 2,
+      },
+      {
         x: 48 * 11,
         y: window.gameCanvasObject.canvas.height - 48 * 2,
-        drawTimes: 1,
+        drawTimes: 2,
       },
       {
         x: 48 * 14,
         y: window.gameCanvasObject.canvas.height - 48 * 2,
-        drawTimes: 1,
+        drawTimes: 2,
       },
       {
         x: 48 * 17,
         y: window.gameCanvasObject.canvas.height - 48 * 2,
-        drawTimes: 1,
+        drawTimes: 2,
+      },
+      {
+        x: 48 * 20,
+        y: window.gameCanvasObject.canvas.height - 48 * 2,
+        drawTimes: 2,
       },
       {
         x: 48 * 7,
