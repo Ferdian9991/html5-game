@@ -1,5 +1,5 @@
 import MainFrame from "./common/MainFrame.js";
-import SkyBackground from "./common/background/SkyBackground.js";
+import CastleBackground from "./common/background/CastleBackground.js";
 import Level1 from "./common/stages/Level1.js";
 
 const frame = new MainFrame();
@@ -21,7 +21,7 @@ frame.update((renderer) => {
 });
 
 document.addEventListener("initializeCompleted", (event) => {
-  const bg = getImage(SkyBackground.imageId);
+  const bg = getImage(CastleBackground.imageId);
 
   if (bg instanceof HTMLImageElement) {
     const canvas = document.createElement("canvas");

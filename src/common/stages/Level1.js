@@ -1,5 +1,5 @@
 import PlayerStats from "../PlayerStats.js";
-import SkyBackground from "../background/SkyBackground.js";
+import CastleBackground from "../background/CastleBackground.js";
 import CoinBlock from "../blocks/CoinBlock.js";
 import IronBlock from "../blocks/IronBlock.js";
 import Player from "../character/Player.js";
@@ -13,7 +13,7 @@ export default class Level1 {
     new PlayerStats();
 
     // Initialize background
-    this.background = new SkyBackground(this.id);
+    this.background = new CastleBackground(this.id);
 
     // Set the player on specific block position
     window.blockPosition = window.gameCanvasObject.canvas.height - 48 * 13;
@@ -46,7 +46,7 @@ export default class Level1 {
   static async preload(loader) {
     if (typeof loader !== "object") return;
 
-    await SkyBackground.preload(loader);
+    await CastleBackground.preload(loader);
     await Player.preload(loader);
     await IronBlock.preload(loader);
     await CoinBlock.preload(loader);
