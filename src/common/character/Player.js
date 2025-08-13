@@ -37,7 +37,7 @@ export default class Player extends Canvas {
     this.jumpKeyPressed = false;
 
     // Movement
-    this.moveSpeed = 1;
+    this.moveSpeed = 2;
 
     // Controller
     this.controller = controller;
@@ -120,7 +120,7 @@ export default class Player extends Canvas {
   __moveXAxis() {
     const originalX = this.x;
 
-    const moveSpeed = this.isRun ? 2.2 : this.moveSpeed;
+    const moveSpeed = this.isRun ? this.moveSpeed * 2.2 : this.moveSpeed;
 
     if (this.isMoveRight) {
       this.standPosition = this.standRight;

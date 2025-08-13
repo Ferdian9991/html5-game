@@ -25,19 +25,19 @@ export default class Level1 {
       hammer1: new Hammer(
         this.id,
         39.5 * 14,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 4,
         500
       ),
       hammer2: new Hammer(
         this.id,
         38.7 * 18,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 4,
         600
       ),
       hammer3: new Hammer(
         this.id,
         40 * 21,
-        window.gameCanvasObject.canvas.height - 38 * 4 + 8,
+        window.gameCanvasObject.canvas.height - 38 * 4 + 4,
         1000
       ),
     };
@@ -56,10 +56,10 @@ export default class Level1 {
 
   draw() {
     this.__drawBackground();
+    this.__drawObstacles();
     this.__drawIronBlocks();
     this.__drawCoinBlocks();
     this.__drawPlayer();
-    this.__drawObstacles();
   }
 
   __drawBackground() {
